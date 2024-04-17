@@ -1,0 +1,44 @@
+import { css } from "@emotion/react";
+
+export const PistolStyles = (skewX: number) => css`
+	&.pistol {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%) skewX(${skewX * -1}deg);
+		transformorigin: "bottom center";
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+		&.reloadAnimation {
+			animation: 1s linear reload;
+		}
+
+		& .pistolSprite {
+			width: 70%;
+			height: 70%;
+		}
+
+		& img.shootAnimation {
+			animation: 0.3s linear shot;
+		}
+	}
+
+	@keyframes reload {
+		0% {
+			bottom: 0;
+		}
+
+		50% {
+			bottom: -200%;
+		}
+
+		100% {
+			bottom: 0;
+		}
+	}
+
+	@keyframes shot {
+	}
+`;
