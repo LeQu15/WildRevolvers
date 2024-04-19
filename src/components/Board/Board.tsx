@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Howl } from "howler";
 import shotSound from "../../assets/sounds/pistol-shot.mp3";
 import reloadSound from "../../assets/sounds/reload.mp3";
+import { Target } from "../Target/Target";
 
 export const Board = () => {
 	const [skewX, setSkewX] = useState(0);
@@ -77,7 +78,9 @@ export const Board = () => {
 		<div className='game' css={BoardStyles} ref={boardRef}>
 			<header className='timer'></header>
 			<main className='board' onClick={pistolShoot}>
-				<div className='target'></div>
+				<div className='targets'>
+					<Target />
+				</div>
 			</main>
 			<footer className='gameFooter'>
 				<Pistol skewX={skewX} stopShooting={stopShooting} isShooting={isShooting} isReloading={isReloading} stopReloading={stopReloading} />
