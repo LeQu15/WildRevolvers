@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import crosshair from "../../assets/crosshair2.png";
+import crosshair from "../../assets/crosshair.png";
 import background from "../../assets/placeholderBgc.png";
 
 export const BoardStyles = () => css`
@@ -11,6 +11,31 @@ export const BoardStyles = () => css`
 		background: url(${background});
 		background-size: cover;
 		background-position: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		user-select: none;
+
+		& .gameFooter {
+			width: 100%;
+			height: 5rem;
+		}
+
+		& .header {
+			width: 100%;
+			height: 4rem;
+
+			& .score {
+				font-weight: bold;
+				color: white;
+				font-size: 2rem;
+				position: fixed;
+				right: 2rem;
+				top: 1rem;
+				font-family: Arial;
+			}
+		}
 
 		& .ammoCount {
 			position: fixed;
@@ -32,7 +57,16 @@ export const BoardStyles = () => css`
 
 		& .board {
 			width: 100%;
-			height: 100%;
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			& > .targets {
+				width: 95%;
+				height: 90%;
+				position: relative;
+			}
 		}
 	}
 `;

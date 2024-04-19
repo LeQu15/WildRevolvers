@@ -4,13 +4,16 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Howl } from "howler";
 import shotSound from "../../assets/sounds/pistol-shot.mp3";
 import reloadSound from "../../assets/sounds/reload.mp3";
+import { Target } from "../Target/Target";
 
 export const Board = () => {
 	const [skewX, setSkewX] = useState(0);
 	const [isShooting, setIsShooting] = useState(false);
 	const [ammo, setAmmo] = useState(6);
+	const [score, setScore] = useState(0);
 	const [isReloading, setIsReloading] = useState(false);
 	const boardRef = useRef<HTMLDivElement>(null);
+	const targetsContainerRef = useRef<HTMLDivElement>(null);
 
 	const reload = useCallback(() => {
 		setIsReloading(true);
@@ -19,11 +22,12 @@ export const Board = () => {
 		});
 		setTimeout(() => {
 			sound.play();
-		}, 350);
+		}, 270);
 	}, []);
 
 	const stopReloading = useCallback(() => {
 		setIsReloading(false);
+		setIsShooting(false);
 		setAmmo(6);
 	}, []);
 
@@ -75,9 +79,17 @@ export const Board = () => {
 
 	return (
 		<div className='game' css={BoardStyles} ref={boardRef}>
-			<header className='timer'></header>
+			<header className='header'>
+				<p className='score'>Score: {score}</p>
+			</header>
 			<main className='board' onClick={pistolShoot}>
-				<div className='target'></div>
+				<div className='targets' ref={targetsContainerRef}>
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+				</div>
 			</main>
 			<footer className='gameFooter'>
 				<Pistol skewX={skewX} stopShooting={stopShooting} isShooting={isShooting} isReloading={isReloading} stopReloading={stopReloading} />

@@ -11,8 +11,9 @@ export const PistolStyles = (skewX: number) => css`
 		justify-content: center;
 		align-items: center;
 		user-select: none;
+		pointer-events: none;
 		&.reloadAnimation {
-			animation: 1s linear reload;
+			animation: 0.5s linear reload;
 		}
 
 		& .pistolSprite {
@@ -21,7 +22,7 @@ export const PistolStyles = (skewX: number) => css`
 		}
 
 		& img.shootAnimation {
-			animation: 0.3s linear shot;
+			animation: 0.1s linear shot;
 		}
 	}
 
