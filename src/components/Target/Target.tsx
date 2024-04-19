@@ -21,13 +21,13 @@ export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore 
 			setTargetSize(size);
 
 			const containerRect = targetsContainerRef.current.getBoundingClientRect();
-			const maxX = containerRect.width - targetSize;
-			const maxY = containerRect.height - targetSize;
+			const maxX = containerRect.width - size;
+			const maxY = containerRect.height - size;
 			const randomX = Math.floor(Math.random() * maxX);
 			const randomY = Math.floor(Math.random() * maxY);
 			setPosition({ x: randomX, y: randomY });
 		}
-	}, [targetsContainerRef, targetSize]);
+	}, [targetsContainerRef]);
 
 	const hitTargetOnClick = useCallback(() => {
 		if (!isShooting && !isReloading) {
@@ -38,7 +38,7 @@ export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore 
 
 	useEffect(() => {
 		generateTarget();
-	}, []);
+	}, [generateTarget]);
 
 	return (
 		<div className='target' css={targetStyles(position, targetSize)}>
