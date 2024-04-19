@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import crosshair from "../../assets/crosshair5.png";
+import crosshair from "../../assets/crosshair9.png";
 import background from "../../assets/placeholderBgc.png";
 
 export const BoardStyles = () => css`
@@ -55,6 +55,7 @@ export const BoardStyles = () => css`
 			& > .targets {
 				width: 95%;
 				height: 90%;
+				position: relative;
 			}
 		}
 	}

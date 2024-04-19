@@ -19,7 +19,7 @@ export const Pistol = ({ skewX, isShooting, stopShooting, isReloading, stopReloa
 
 	return (
 		<div className={`pistol ${isReloading ? "reloadAnimation" : ""}`} onAnimationEnd={stopReloading} css={PistolStyles(skewX)}>
-			<img className={`pistolSprite ${isShooting ? "shootAnimation" : ""}`} src={isShooting ? pistolShoot : pistol} onAnimationEnd={handleImgAnimationEnd} />
+			<img className={`pistolSprite ${isShooting ? "shootAnimation" : ""}`} draggable={false} src={isShooting ? pistolShoot : pistol} onAnimationEnd={handleImgAnimationEnd} />
 		</div>
 	);
 };

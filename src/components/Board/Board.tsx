@@ -12,6 +12,7 @@ export const Board = () => {
 	const [ammo, setAmmo] = useState(6);
 	const [isReloading, setIsReloading] = useState(false);
 	const boardRef = useRef<HTMLDivElement>(null);
+	const targetsContainerRef = useRef<HTMLDivElement>(null);
 
 	const reload = useCallback(() => {
 		setIsReloading(true);
@@ -20,11 +21,12 @@ export const Board = () => {
 		});
 		setTimeout(() => {
 			sound.play();
-		}, 350);
+		}, 270);
 	}, []);
 
 	const stopReloading = useCallback(() => {
 		setIsReloading(false);
+		setIsShooting(false);
 		setAmmo(6);
 	}, []);
 
@@ -78,8 +80,12 @@ export const Board = () => {
 		<div className='game' css={BoardStyles} ref={boardRef}>
 			<header className='timer'></header>
 			<main className='board' onClick={pistolShoot}>
-				<div className='targets'>
-					<Target />
+				<div className='targets' ref={targetsContainerRef}>
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} />
+					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} />
 				</div>
 			</main>
 			<footer className='gameFooter'>
