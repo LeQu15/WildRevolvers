@@ -6,9 +6,10 @@ type targetProps = {
 	targetsContainerRef: RefObject<HTMLDivElement>;
 	isReloading: boolean;
 	isShooting: boolean;
+	setScore: (updateScore: (prevScore: number) => number) => void;
 };
 
-export const Target = ({ targetsContainerRef, isReloading, isShooting }: targetProps) => {
+export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore }: targetProps) => {
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isHit, setIsHit] = useState(false);
 	const [targetSize, setTargetSize] = useState(100);
@@ -29,7 +30,10 @@ export const Target = ({ targetsContainerRef, isReloading, isShooting }: targetP
 	}, [targetsContainerRef]);
 
 	const hitTargetOnClick = useCallback(() => {
-		if (!isShooting && !isReloading) setIsHit(true);
+		if (!isShooting && !isReloading) {
+			setIsHit(true);
+			setScore((prevScore: number) => prevScore + 100);
+		}
 	}, [isShooting, isReloading]);
 
 	useEffect(() => {

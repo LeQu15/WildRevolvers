@@ -22,9 +22,19 @@ export const BoardStyles = () => css`
 			height: 5rem;
 		}
 
-		& .timer {
+		& .header {
 			width: 100%;
 			height: 4rem;
+
+			& .score {
+				font-weight: bold;
+				color: white;
+				font-size: 2rem;
+				position: fixed;
+				right: 2rem;
+				top: 1rem;
+				font-family: Arial;
+			}
 		}
 
 		& .ammoCount {
