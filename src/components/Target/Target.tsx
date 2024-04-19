@@ -27,14 +27,14 @@ export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore 
 			const randomY = Math.floor(Math.random() * maxY);
 			setPosition({ x: randomX, y: randomY });
 		}
-	}, [targetsContainerRef]);
+	}, [targetsContainerRef, targetSize]);
 
 	const hitTargetOnClick = useCallback(() => {
 		if (!isShooting && !isReloading) {
 			setIsHit(true);
 			setScore((prevScore: number) => prevScore + 100);
 		}
-	}, [isShooting, isReloading]);
+	}, [isShooting, isReloading, setScore]);
 
 	useEffect(() => {
 		generateTarget();
