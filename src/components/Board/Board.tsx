@@ -11,7 +11,7 @@ export const Board = () => {
 	const [isShooting, setIsShooting] = useState(false);
 	const [ammo, setAmmo] = useState(6);
 	const [score, setScore] = useState(0);
-	const [time, setTime] = useState(50);
+	const [time, setTime] = useState(1000);
 	const [isReloading, setIsReloading] = useState(false);
 	const [gameOver, setGameOver] = useState(false);
 	const boardRef = useRef<HTMLDivElement>(null);
