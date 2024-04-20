@@ -7,12 +7,16 @@ type targetProps = {
 	isReloading: boolean;
 	isShooting: boolean;
 	setScore: (updateScore: (prevScore: number) => number) => void;
+	setTime: (newTime: number) => void;
+	time: number;
+	gameOver: boolean;
 };
 
-export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore }: targetProps) => {
+export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore, setTime, time, gameOver }: targetProps) => {
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isHit, setIsHit] = useState(false);
 	const [targetSize, setTargetSize] = useState(100);
+	const [visible, setVisible] = useState(true);
 
 	const generateTarget = useCallback(() => {
 		setIsHit(false);
@@ -30,24 +34,45 @@ export const Target = ({ targetsContainerRef, isReloading, isShooting, setScore 
 	}, [targetsContainerRef]);
 
 	const hitTargetOnClick = useCallback(() => {
-		if (!isShooting && !isReloading) {
-			setIsHit(true);
-			setScore((prevScore: number) => prevScore + 100);
+		if (!gameOver) {
+			if (!isShooting && !isReloading) {
+				setIsHit(true);
+				setScore((prevScore: number) => prevScore + 100);
+				if (time > 0) {
+					let newTime = time + 10;
+					if (newTime > 1000) newTime = 1000;
+					setTime(newTime);
+				}
+			}
 		}
-	}, [isShooting, isReloading, setScore]);
+	}, [isShooting, isReloading, setScore, setTime, time, gameOver]);
+
+	const missedTarget = useCallback(() => {
+		setVisible(false);
+		if (!gameOver) {
+			setTimeout(() => {
+				generateTarget();
+				setVisible(true);
+			}, 300);
+		}
+	}, [generateTarget, gameOver]);
 
 	useEffect(() => {
 		generateTarget();
 	}, [generateTarget]);
 
 	return (
-		<div className='target' css={targetStyles(position, targetSize)}>
-			{!isHit ? (
-				<img src={targetIcon} alt='target' onClick={hitTargetOnClick} draggable={false} />
+		<div className='target' css={targetStyles(position, targetSize)} onClick={hitTargetOnClick}>
+			{visible ? (
+				!isHit ? (
+					<img src={targetIcon} alt='target' onAnimationEnd={missedTarget} draggable={false} />
+				) : (
+					<p className='hitmarker' onAnimationEnd={generateTarget}>
+						+100!
+					</p>
+				)
 			) : (
-				<p className='hitmarker' onAnimationEnd={generateTarget}>
-					+100!
-				</p>
+				""
 			)}
 		</div>
 	);
