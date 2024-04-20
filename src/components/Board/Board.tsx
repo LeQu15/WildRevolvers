@@ -1,5 +1,5 @@
 import { Pistol } from "../Pistol/Pistol";
-import { BoardStyles } from "./Board.styles";
+import { BoardStyles, TimerStyles } from "./Board.styles";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Howl } from "howler";
 import shotSound from "../../assets/sounds/pistol-shot.mp3";
@@ -11,7 +11,9 @@ export const Board = () => {
 	const [isShooting, setIsShooting] = useState(false);
 	const [ammo, setAmmo] = useState(6);
 	const [score, setScore] = useState(0);
+	const [time, setTime] = useState(1000);
 	const [isReloading, setIsReloading] = useState(false);
+	const [gameOver, setGameOver] = useState(false);
 	const boardRef = useRef<HTMLDivElement>(null);
 	const targetsContainerRef = useRef<HTMLDivElement>(null);
 
@@ -26,33 +28,37 @@ export const Board = () => {
 	}, []);
 
 	const stopReloading = useCallback(() => {
-		setIsReloading(false);
-		setIsShooting(false);
-		setAmmo(6);
-	}, []);
+		if (!gameOver) {
+			setIsReloading(false);
+			setIsShooting(false);
+			setAmmo(6);
+		}
+	}, [gameOver]);
 
 	const pistolShoot = useCallback(() => {
-		if (!isShooting && !isReloading) {
-			setIsShooting(true);
-			const newAmmoCount = ammo - 1;
-			if (newAmmoCount >= 0) {
-				setAmmo(newAmmoCount);
-				const sound = new Howl({
-					src: shotSound,
-				});
-				sound.play();
-			} else {
-				reload();
+		if (ammo > 0)
+			if (!isShooting && !isReloading) {
+				setIsShooting(true);
+				const newAmmoCount = ammo - 1;
+				if (newAmmoCount >= 0) {
+					setAmmo(newAmmoCount);
+					const sound = new Howl({
+						src: shotSound,
+					});
+					sound.play();
+				}
 			}
-		}
-	}, [ammo, isShooting, reload, isReloading]);
+	}, [ammo, isShooting, isReloading]);
 
 	const stopShooting = useCallback(() => {
 		setIsShooting(false);
-		if (ammo === 0) {
+		if (ammo <= 0 && time <= 0) {
+			setGameOver(true);
+		}
+		if (ammo === 0 && time > 0) {
 			reload();
 		}
-	}, [ammo, reload]);
+	}, [ammo, reload, time]);
 
 	useEffect(() => {
 		const updatePistolRotation = (e: MouseEvent) => {
@@ -77,22 +83,78 @@ export const Board = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const timer = setInterval(() => {
+			let newTime = time - 1;
+			if (newTime < 0) newTime = 0;
+
+			setTime(newTime);
+		}, 100);
+
+		return () => clearInterval(timer);
+	}, [time]);
+
 	return (
 		<div className='game' css={BoardStyles} ref={boardRef}>
 			<header className='header'>
+				<div className='timer' css={TimerStyles(time / 10)}>
+					<div className='timerFiller'></div>
+				</div>
+				{time <= 0 && <p className='noAmmoInfo'>! No more resupplies !</p>}
 				<p className='score'>Score: {score}</p>
 			</header>
 			<main className='board' onClick={pistolShoot}>
+				{gameOver && <p className='gameOver'>GAME OVER!</p>}
 				<div className='targets' ref={targetsContainerRef}>
-					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
-					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
-					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
-					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
-					<Target targetsContainerRef={targetsContainerRef} isReloading={isReloading} isShooting={isShooting} setScore={setScore} />
+					<Target
+						targetsContainerRef={targetsContainerRef}
+						isReloading={isReloading}
+						isShooting={isShooting}
+						setScore={setScore}
+						setTime={setTime}
+						time={time}
+						gameOver={gameOver}
+					/>
+					<Target
+						targetsContainerRef={targetsContainerRef}
+						isReloading={isReloading}
+						isShooting={isShooting}
+						setScore={setScore}
+						setTime={setTime}
+						time={time}
+						gameOver={gameOver}
+					/>
+					<Target
+						targetsContainerRef={targetsContainerRef}
+						isReloading={isReloading}
+						isShooting={isShooting}
+						setScore={setScore}
+						setTime={setTime}
+						time={time}
+						gameOver={gameOver}
+					/>
+					<Target
+						targetsContainerRef={targetsContainerRef}
+						isReloading={isReloading}
+						isShooting={isShooting}
+						setScore={setScore}
+						setTime={setTime}
+						time={time}
+						gameOver={gameOver}
+					/>
+					<Target
+						targetsContainerRef={targetsContainerRef}
+						isReloading={isReloading}
+						isShooting={isShooting}
+						setScore={setScore}
+						setTime={setTime}
+						time={time}
+						gameOver={gameOver}
+					/>
 				</div>
 			</main>
 			<footer className='gameFooter'>
-				<Pistol skewX={skewX} stopShooting={stopShooting} isShooting={isShooting} isReloading={isReloading} stopReloading={stopReloading} />
+				<Pistol skewX={skewX} stopShooting={stopShooting} isShooting={isShooting} isReloading={isReloading} stopReloading={stopReloading} gameOver={gameOver} />
 				<p className='ammoCount'>
 					{ammo}/6<i className='fa-solid fa-egg'></i>
 				</p>

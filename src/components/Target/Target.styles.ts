@@ -19,6 +19,7 @@ export const targetStyles = (position: Position, size: number) => css`
 
 		img {
 			width: 100%;
+			animation: 2s 5s linear disappearTarget forwards;
 		}
 
 		p {
@@ -28,6 +29,16 @@ export const targetStyles = (position: Position, size: number) => css`
 			font-family: Arial;
 			pointer-events: none;
 			animation: pointsUp 0.6s linear forwards;
+		}
+	}
+
+	@keyframes disappearTarget {
+		0% {
+			transform: scale(1);
+		}
+
+		100% {
+			transform: scale(0);
 		}
 	}
 

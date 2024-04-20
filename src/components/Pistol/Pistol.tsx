@@ -9,16 +9,17 @@ type PistolProps = {
 	stopShooting: () => void;
 	isReloading: boolean;
 	stopReloading: () => void;
+	gameOver: boolean;
 };
 
-export const Pistol = ({ skewX, isShooting, stopShooting, isReloading, stopReloading }: PistolProps) => {
+export const Pistol = ({ skewX, isShooting, stopShooting, isReloading, stopReloading, gameOver }: PistolProps) => {
 	const handleImgAnimationEnd = (e: AnimationEvent<HTMLImageElement>) => {
 		e.stopPropagation();
 		stopShooting();
 	};
 
 	return (
-		<div className={`pistol ${isReloading ? "reloadAnimation" : ""}`} onAnimationEnd={stopReloading} css={PistolStyles(skewX)}>
+		<div className={`pistol ${isReloading ? "reloadAnimation" : ""} ${gameOver ? "hidePistol" : ""}`} onAnimationEnd={stopReloading} css={PistolStyles(skewX)}>
 			<img className={`pistolSprite ${isShooting ? "shootAnimation" : ""}`} draggable={false} src={isShooting ? pistolShoot : pistol} onAnimationEnd={handleImgAnimationEnd} />
 		</div>
 	);

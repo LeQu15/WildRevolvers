@@ -12,6 +12,10 @@ export const PistolStyles = (skewX: number) => css`
 		align-items: center;
 		user-select: none;
 		pointer-events: none;
+
+		&.hidePistol {
+			animation: 3s linear hide forwards;
+		}
 		&.reloadAnimation {
 			animation: 0.5s linear reload;
 		}
@@ -37,6 +41,16 @@ export const PistolStyles = (skewX: number) => css`
 
 		100% {
 			bottom: 0;
+		}
+	}
+
+	@keyframes hide {
+		0% {
+			bottom: 0;
+		}
+
+		100% {
+			bottom: -200%;
 		}
 	}
 
